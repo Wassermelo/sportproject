@@ -5,7 +5,6 @@ import Main from './register/Main';
 //import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import UserService from "./UserService";
-import HttpService from "./HttpService";
 
 const render = () => /*{*/
         ReactDOM.render(
@@ -18,7 +17,6 @@ const render = () => /*{*/
         );
 
 UserService.initKeycloak(render);
-HttpService.configure();
 
 /*ReactDOM.render(
   <React.StrictMode>
