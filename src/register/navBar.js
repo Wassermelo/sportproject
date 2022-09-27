@@ -7,6 +7,7 @@ import PostSignup from "../DB/postSignup";
 import { Link } from "react-router-dom";
 import image from "../images/inprove_logo-400x103.png";
 import Footer from "./footer";
+import UserService from "../UserService";
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -75,124 +76,110 @@ export default class NavBar extends Component {
                   className="nav-item"
                   hidden={!this.state.showSignIn /*|| this.props.loggedin*/}
                 >
-                  <Link className="nav-link" to={"/reg/sign-in"}>
+                  <Link className="nav-link" hidden={UserService.isLoggedIn()} to={"/reg/sign-in"}>
                     Login
                   </Link>
                 </li>
-
-                <li className="nav-item" hidden={this.state.showSignIn}>
-                  <Link className="nav-link" to={"/reg/sign-out"}>
+                <li className="nav-item">
+                  <a className="nav-link" target="_blank"
+                     href="http://192.168.2.105:8089/auth/realms/Sport/account/#/personal-info">
+                    Profil
+                  </a >
+                </li>
+                <li className="nav-item" hidden={!UserService.isLoggedIn()}>
+                  <Link className="nav-link" onClick={() => UserService.doLogout()} to={"/reg/sign-out"}>
                     Sign out
                   </Link>
                 </li>
 
-                <li className="nav-item" hidden={!this.state.showSignUp}>
-                  <Link className="nav-link" to={"/reg/sign-up"}>
+                <li className="nav-item" hidden={UserService.isLoggedIn()}>
+                  <Link className="nav-link" to={"/reg/sign-up-van"}>
                     Registrieren
                   </Link>
                 </li>
 
-
                 <li
-                    className="nav-item"
-                    hidden={!this.state.showAdminTrainer && !this.state.showAdmin}
+                  className="nav-item"
+                  hidden={!UserService.hasRole('sport_trainer_admin') && !UserService.hasRole('sport_admin')}
+               //   hidden={!this.state.showAdminTrainer && !this.state.showAdmin}
                 >
-                  <Link className="nav-link" to={"/csv/athleteInfo"}>
-                    Athletes Info
+                  <Link className="nav-link" to={"/csv/reader"}>
+                    Upload Files
                   </Link>
                 </li>
 
-
                 <li
                   className="nav-item"
-                  hidden={!this.state.showAdminTrainer && !this.state.showAdmin}
+                  //hidden={!this.state.showAdminTrainer && !this.state.showAdmin}
+                  hidden={!UserService.hasRole('sport_trainer_admin') && !UserService.hasRole('sport_admin')}
                 >
                   <Link className="nav-link" to={"/lime/control"}>
                     Control Limesurvey
                   </Link>
                 </li>
 
-
                 <li
-                    className="nav-item"
-                    hidden={!this.state.showAdminTrainer && !this.state.showAdmin}
+                  className="nav-item"
+                  //hidden={!this.state.showAdminTrainer && !this.state.showAdmin}
+                  hidden={!UserService.hasRole('sport_trainer_admin') && !UserService.hasRole('sport_admin')}
                 >
-                  <Link className="nav-link" to={"/csv/reader"}>
-                    Upload Data
+                  <Link className="nav-link" to={"/csv/athleteInfo"}>
+                    Athletes Info
                   </Link>
                 </li>
 
-                <li
-                    className="nav-item"
-                    hidden={!this.state.showAdminTrainer && !this.state.showAdmin}
+                <li className="nav-item"
+                   // hidden={!this.state.showTrainer}
+                    hidden={!UserService.hasRole('sport_trainer')}
                 >
-                  <Link className="nav-link" to={"/csv/history"}>
-                    Download Data
-                  </Link>
-                </li>
-
-
-
-                <li className="nav-item" hidden={!this.state.showTrainer}>
                   <Link className="nav-link" to={"/trainer/addMyTests"}>
                     Trainings List
                   </Link>
                 </li>
-                <li className="nav-item" hidden={!this.state.showTrainer}>
+                <li className="nav-item"
+                    //hidden={!this.state.showTrainer}
+                    hidden={!UserService.hasRole('sport_trainer')}
+                >
                   <Link className="nav-link" to={"/trainer/addAthletes"}>
                     Athletes List
                   </Link>
                 </li>
-                <li className="nav-item" hidden={!this.state.showTrainer}>
+                <li className="nav-item"
+                    //hidden={!this.state.showTrainer}
+                    hidden={!UserService.hasRole('sport_trainer')}
+                >
                   <Link className="nav-link" to={"/trainer/sheet"}>
                     Evaluation
                   </Link>
                 </li>
-
-                <li className="nav-item" hidden={!this.state.showTrainer}>
-                  <Link className="nav-link" to={"/trainer/myhistory"}>
-                    My Data
-                  </Link>
-                </li>
-
-                <li className="nav-item" hidden={true || !this.state.showTrainer && !this.state.showAdmin && !this.state.showAdminTrainer}>
-                  <Link className="nav-link" to={"/trainer/VideoUpload/uploadFile"}>
-                    Upload videos
-                  </Link>
-                </li>
-
-                <li className="nav-item" hidden={true || !this.state.showTrainer && !this.state.showAdmin && !this.state.showAdminTrainer}>
-                  <Link className="nav-link" to={"/trainer/VideoUpload/videonav"}>
-                    Manage videos
-                  </Link>
-                </li>
-
-
-                <li className="nav-item" hidden={!this.state.showAdminTrainer}>
+                <li className="nav-item"
+                    //hidden={!this.state.showAdminTrainer}
+                    hidden={!UserService.hasRole('sport_trainer_admin')}
+                >
                   <Link className="nav-link" to={"/trainer/createTest"}>
                     Create New Training
                   </Link>
                 </li>
 
-                <li className="nav-item" hidden={!this.state.showAdminTrainer}>
+                <li className="nav-item"
+                    //hidden={!this.state.showAdminTrainer}
+                    hidden={!UserService.hasRole('sport_trainer_admin')}>
                   <Link className="nav-link" to={"/trainer/editCoach"}>
                     Edit Coaches
                   </Link>
                 </li>
 
-                <li className="nav-item" hidden={this.state.showSignIn}>
-                  <Link className="nav-link" to={"/reg/changemypassword"}>
-                    Change Password
-                  </Link>
+                <li className="nav-item">
+                  <a className="btn btn-primary btn-block" target="_blank" href="http://localhost/index.php/admin/index"  >
+                    Go to LimeSurvey
+                  </a >
                 </li>
-
-
               </ul>
             </div>
           </div>
         </nav>
 
-
+        <Footer />
       </div>
     );
   }
