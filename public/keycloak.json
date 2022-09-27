@@ -1,0 +1,8 @@
+{
+  "realm": "sport",
+  "auth-server-url": "http://localhost:8089/auth/",
+  "ssl-required": "external",
+  "resource": "inprove",
+  "public-client": true,
+  "confidential-port": 0
+}
